@@ -1,0 +1,66 @@
+﻿@{
+    Layout = null;
+
+    string[] hobby = (string[])ViewData["hobby"];
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Profil</title>
+</head>
+<body>
+    <h2>Halaman Profil</h2>
+    <p>Selamat datang @ViewData["nama"], alamat anda @ViewData["alamat"], telp anda @ViewBag.Telp</p>
+    <p>Salah satu hobby anda adalah @hobby[0]</p>
+    <p>Semua hobby anda :</p>
+    <ul>
+        @foreach(var hb in hobby) { 
+            <li>@hb</li>
+        }
+    </ul>
+    <br /><br />
+    <form asp-action="TampilRegistrasi" method="post">
+        <label for="firstname">First Name :</label><br />
+        <input type="text" name="firstname" placeholder="insert firstname" /><br /><br />
+        
+        <label for="lastname">Last Name :</label><br />
+        <input type="text" name="lastname" placeholder="insert lastname" /><br /><br />
+
+        <label for="password">Password :</label><br />
+        <input type="password" name="password" value="" /><br /><br />
+
+        <label for="umur">Umur :</label><br />
+        <input type="number" name="umur" /><br /><br />
+
+        <label for="email">Email :</label><br />
+        <input type="email" name="email" /><br /><br />
+
+        <label for="tanggal">Tanggal :</label><br />
+        <input type="date" name="tanggal"/><br /><br />
+
+        <label for="gender">Gender :</label><br />
+        <input type="radio" name="gender" value="Pria" />Pria &nbsp;
+        <input type="radio" name="gender" value="Wanita" />Wanita<br /><br />
+
+        <label for="negara">Negara :</label><br />
+        <select name="negara">
+            <option value="Indonesia">Indonesia</option>
+            <option value="Thailand">Thailand</option>
+            <option value="Vietnam">Vietnam</option>
+            <option value="Singapore">Singapore</option>
+            <option value="Malaysia">Malaysia</option>
+        </select><br /><br />
+
+        <label for="hobby">Hobby :</label><br />
+        <input type="checkbox" name="hobby" value="berenang" />Berenang &nbsp;
+        <input type="checkbox" name="hobby" value="tidur" />Tidur &nbsp;
+        <input type="checkbox" name="hobby" value="sepedaan" />Sepedaan &nbsp;
+        <input type="checkbox" name="hobby" value="ngegame" />Ngegame <br /><br />
+
+        <label for="summary">Summary</label><br />
+        <textarea name="summary" cols="55" rows="10"></textarea><br /><br />
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

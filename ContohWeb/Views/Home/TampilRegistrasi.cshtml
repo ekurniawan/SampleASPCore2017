@@ -1,0 +1,26 @@
+﻿@{
+    Layout = null;
+
+    string[] hobby = (string[])ViewData["hobby"];
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Tampil Registrasi</title>
+</head>
+<body>
+    <h2>Halaman Tampil Registrasi</h2>
+    
+    <p>Selamat @ViewData["firstname"], @ViewData["lastname"] anda berhasil mendaftar</p>
+    <p>Umur: @ViewData["umur"], Email: @ViewData["email"], Tanggal: @ViewData["tanggal"]</p>
+    <p>Gender: @ViewData["gender"], Negara: @ViewData["negara"]</p>
+    <p>Hobby anda :</p>
+    <ol type="A">
+        @foreach(var hb in hobby)
+        {
+            <li>@hb</li>
+        }
+    </ol>
+    <p>Summary : @ViewData["summary"]</p>
+</body>
+</html>
