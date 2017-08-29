@@ -5,29 +5,34 @@
 }
 
 <h2>Daftar Mahasiswa</h2>
-
-<table class="table table-striped">
-    <tr>
-        <th>No</th>
-        <th>Nim</th>
-        <th>Nama</th>
-        <th>Email</th>
-        <th>IPK</th>
-        <th></th>
-    </tr>
-    @foreach (var mhs in Model)
-    {
-        count += 1;
+<br />
+<a asp-action="Create" class="btn btn-info btn-sm">Create</a>
+<br /><br />
+<div class="table-responsive">
+    <table class="table">
         <tr>
-            <td>@count</td>
-            <td>@mhs.Nim</td>
-            <td>@mhs.Nama</td>
-            <td>@mhs.Email</td>
-            <td>@mhs.IPK</td>
-            <td>
-                <a class="btn btn-success btn-sm" asp-action="Details" asp-route-id="@mhs.Nim">details</a>
-            </td>
+            <th>No</th>
+            <th>Nim</th>
+            <th>Nama</th>
+            <th>Email</th>
+            <th>IPK</th>
+            <th></th>
         </tr>
-    }
-</table>
+        @foreach (var mhs in Model)
+        {
+            count += 1;
+            <tr>
+                <td>@count</td>
+                <td>@mhs.Nim</td>
+                <td>@mhs.Nama</td>
+                <td>@mhs.Email</td>
+                <td>@mhs.IPK</td>
+                <td>
+                    <a class="btn btn-success btn-sm" asp-action="Details" asp-route-id="@mhs.Nim">details</a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
 

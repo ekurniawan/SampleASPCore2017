@@ -35,8 +35,19 @@ namespace ContohWeb.Controllers
 
         public IActionResult Details(string id)
         {
+            ViewData["Title"] = "Detail Mahasiswa";
+            ViewData["bController"] = "Mahasiswa";
+            ViewData["bAction"] = "Index";
+            ViewData["bValue"] = "Daftar Mahasiswa";
+            ViewData["bItemValue"] = "Detail Mahasiswa";
+
             var mhs = lstMhs.Where(m => m.Nim == id).SingleOrDefault();
             return View(mhs);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
         }
     }
 }
