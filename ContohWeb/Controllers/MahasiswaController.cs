@@ -15,7 +15,10 @@ namespace ContohWeb.Controllers
         static List<Mahasiswa> lstMhs = new List<Mahasiswa>
         {
             new Mahasiswa {Nim="72009847",Nama="Erick Kurniawan",Email="erick@gmail.com",IPK=3.2},
-            new Mahasiswa {Nim="71098475",Nama="Budi Sutejo",Email="budi@gmail.com",IPK=3.5}
+            new Mahasiswa {Nim="71098475",Nama="Budi Sutejo",Email="budi@gmail.com",IPK=3.5},
+            new Mahasiswa {Nim="71098476",Nama="Halim Budi",Email="halim@gmail.com",IPK=3.9},
+            new Mahasiswa {Nim="71098477",Nama="Joko Sutopo",Email="joko@gmail.com",IPK=2.5},
+            new Mahasiswa {Nim="71098478",Nama="Bambang",Email="bambang@gmail.com",IPK=3.0}
         };
 
         // GET: /<controller>/
@@ -28,6 +31,12 @@ namespace ContohWeb.Controllers
             ViewData["bItemValue"] = "Daftar Mahasiswa";
 
             return View(lstMhs);
+        }
+
+        public IActionResult Details(string id)
+        {
+            var mhs = lstMhs.Where(m => m.Nim == id).SingleOrDefault();
+            return View(mhs);
         }
     }
 }

@@ -13,6 +13,7 @@
         <th>Nama</th>
         <th>Email</th>
         <th>IPK</th>
+        <th></th>
     </tr>
     @foreach (var mhs in Model)
     {
@@ -23,6 +24,9 @@
             <td>@mhs.Nama</td>
             <td>@mhs.Email</td>
             <td>@mhs.IPK</td>
+            <td>
+                <a class="btn btn-success btn-sm" asp-action="Details" asp-route-id="@mhs.Nim">details</a>
+            </td>
         </tr>
     }
 </table>
