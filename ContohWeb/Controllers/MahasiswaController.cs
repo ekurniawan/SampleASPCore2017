@@ -21,6 +21,12 @@ namespace ContohWeb.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
+            ViewData["Title"] = "Daftar Mahasiswa";
+            ViewData["bController"] = "Home";
+            ViewData["bAction"] = "Index";
+            ViewData["bValue"] = "Home";
+            ViewData["bItemValue"] = "Daftar Mahasiswa";
+
             return View(lstMhs);
         }
     }
