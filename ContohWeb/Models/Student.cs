@@ -11,9 +11,11 @@ namespace ContohWeb.Models
         public int StudentID { get; set; }
 
         [Display(Name ="Last Name")]
+        [Required(ErrorMessage ="Data Last Name harus diisi !")]
         public string LastName { get; set; }
 
         [Display(Name = "First Name")]
+        [Required(ErrorMessage ="Data First Name harus diisi !")]
         public string FirstMidName { get; set; }
 
         [Display(Name = "Enrollment Date")]

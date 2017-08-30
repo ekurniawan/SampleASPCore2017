@@ -89,7 +89,9 @@ namespace ContohWeb.Controllers
             }
             catch(Exception ex)
             {
-                ViewData["pesan"] = "Kesalahan : " + ex.Message;
+                ViewData["pesan"] = @"<div class='alert alert-warning alert-dismissable'>
+                        <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+                        <strong>Kesalahan:</strong>"+ex.Message+"</div>";
                 return View();
             }
         }
@@ -97,7 +99,14 @@ namespace ContohWeb.Controllers
         // GET: Students/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var result = (from s in context.Students
+                          where s.StudentID == id
+                          select s).SingleOrDefault();
+
+            if (result != null)
+                return View(result);
+
+            return NotFound("Student tidak ditemukan !");
         }
 
         // POST: Students/Edit/5

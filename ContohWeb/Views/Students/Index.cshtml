@@ -24,7 +24,8 @@
             <td>@student.LastName</td>
             <td>@student.EnrollmentDate.ToString("MM-dd-yyyy")</td>
             <td>
-                <a asp-action="Details" asp-route-id="@student.StudentID" class="btn btn-success btn-sm">details</a>
+                <a asp-action="Details" asp-route-id="@student.StudentID" class="btn btn-success btn-sm">details</a>&nbsp;
+                <a asp-action="Edit" asp-route-id="@student.StudentID" class="btn btn-warning btn-sm">edit</a>&nbsp;
             </td>
         </tr>
     }
