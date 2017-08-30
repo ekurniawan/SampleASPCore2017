@@ -80,7 +80,9 @@ namespace ContohWeb.Controllers
                     context.Students.Add(student);
                     context.SaveChanges();
 
-                    TempData["pesan"] = "<div class='alert alert-success'>Proses tambah data Student berhasil</div>";
+                    TempData["pesan"] = @"<div class='alert alert-success alert-dismissable'>
+                        <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+                        Proses tambah data Student berhasil</div>";
                     return RedirectToAction("Index");
                 }
                 return View();
