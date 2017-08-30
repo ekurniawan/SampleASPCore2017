@@ -32,8 +32,8 @@ namespace ContohWeb.Controllers
 
             //var results = context.Students.OrderBy(s => s.LastName).ToList();
             var results = await (from s in context.Students
-                          orderby s.LastName ascending
-                          select s).AsNoTracking().ToListAsync();
+                                 orderby s.LastName ascending
+                                 select s).AsNoTracking().ToListAsync();
             return View(results);
         }
 
@@ -47,8 +47,8 @@ namespace ContohWeb.Controllers
             ViewData["bItemValue"] = "Student Detail";
 
             var result = await (from s in context.Students
-                          where s.StudentID == id
-                          select s).SingleOrDefaultAsync();
+                                where s.StudentID == id
+                                select s).SingleOrDefaultAsync();
 
             if (result != null)
             {
@@ -88,7 +88,7 @@ namespace ContohWeb.Controllers
                 }
                 return View();
             }
-            catch(DbUpdateException ex)
+            catch (DbUpdateException ex)
             {
                 /*ViewData["pesan"] = @"<div class='alert alert-warning alert-dismissable'>
                         <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
@@ -103,8 +103,8 @@ namespace ContohWeb.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             var result = await (from s in context.Students
-                          where s.StudentID == id
-                          select s).SingleOrDefaultAsync();
+                                where s.StudentID == id
+                                select s).SingleOrDefaultAsync();
 
             if (result != null)
                 return View(result);
@@ -119,29 +119,21 @@ namespace ContohWeb.Controllers
         {
             try
             {
-                var editStudent = await (from s in context.Students
-                                   where s.StudentID == id
-                                   select s).SingleOrDefaultAsync();
-
                 if (ModelState.IsValid)
                 {
-                    if (editStudent != null)
-                    {
-                        editStudent.LastName = student.LastName;
-                        editStudent.FirstMidName = student.FirstMidName;
-                        editStudent.EnrollmentDate = student.EnrollmentDate;
-                        await context.SaveChangesAsync();
+                    context.Update(student);
+                    await context.SaveChangesAsync();
 
-                        TempData["pesan"] = @"<div class='alert alert-success alert-dismissable'>
+                    TempData["pesan"] = @"<div class='alert alert-success alert-dismissable'>
                         <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
                         Proses edit data Student " + student.LastName + " berhasil</div>";
 
-                        return RedirectToAction("Index");
-                    }
+                    return RedirectToAction("Index");
+
                 }
                 return View();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ViewData["pesan"] = @"<div class='alert alert-warning alert-dismissable'>
                         <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
@@ -154,9 +146,9 @@ namespace ContohWeb.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             var result = await (from s in context.Students
-                          where s.StudentID == id
-                          select s).SingleOrDefaultAsync();
-            if(result!=null)
+                                where s.StudentID == id
+                                select s).SingleOrDefaultAsync();
+            if (result != null)
                 return View(result);
 
             return NotFound("Data tidak ditemukan");
@@ -170,10 +162,10 @@ namespace ContohWeb.Controllers
             try
             {
                 var result = await (from s in context.Students
-                              where s.StudentID == student.StudentID
-                              select s).SingleOrDefaultAsync();
+                                    where s.StudentID == student.StudentID
+                                    select s).SingleOrDefaultAsync();
 
-                if(result!=null)
+                if (result != null)
                 {
                     context.Students.Remove(result);
                     await context.SaveChangesAsync();
