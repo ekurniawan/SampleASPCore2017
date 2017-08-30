@@ -33,7 +33,7 @@ namespace ContohWeb.Controllers
             //var results = context.Students.OrderBy(s => s.LastName).ToList();
             var results = await (from s in context.Students
                           orderby s.LastName ascending
-                          select s).ToListAsync();
+                          select s).AsNoTracking().ToListAsync();
             return View(results);
         }
 
@@ -72,7 +72,7 @@ namespace ContohWeb.Controllers
         // POST: Students/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Student student)
+        public async Task<ActionResult> Create([Bind("EnrollmentDate,FirstMidName,LastName")] Student student)
         {
             try
             {
@@ -88,13 +88,15 @@ namespace ContohWeb.Controllers
                 }
                 return View();
             }
-            catch(Exception ex)
+            catch(DbUpdateException ex)
             {
-                ViewData["pesan"] = @"<div class='alert alert-warning alert-dismissable'>
+                /*ViewData["pesan"] = @"<div class='alert alert-warning alert-dismissable'>
                         <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
                         <strong>Kesalahan:</strong>"+ex.Message+"</div>";
-                return View();
+                return View();*/
+                ModelState.AddModelError("", "Kesalahan :" + ex.Message);
             }
+            return View(student);
         }
 
         // GET: Students/Edit/5
