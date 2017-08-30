@@ -27,6 +27,8 @@ namespace ContohWeb.Controllers
             ViewData["bValue"] = "Students";
             ViewData["bItemValue"] = "Student List";
 
+            ViewData["pesan"] = TempData["pesan"];
+
             //var results = context.Students.OrderBy(s => s.LastName).ToList();
             var results = (from s in context.Students
                           orderby s.LastName ascending
@@ -57,22 +59,35 @@ namespace ContohWeb.Controllers
         // GET: Students/Create
         public ActionResult Create()
         {
+            ViewData["Title"] = "Create Student";
+            ViewData["bController"] = "Students";
+            ViewData["bAction"] = "Index";
+            ViewData["bValue"] = "Students";
+            ViewData["bItemValue"] = "Create Student";
+
             return View();
         }
 
         // POST: Students/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Student student)
         {
             try
             {
-                // TODO: Add insert logic here
+                if (ModelState.IsValid)
+                {
+                    context.Students.Add(student);
+                    context.SaveChanges();
 
-                return RedirectToAction(nameof(Index));
+                    TempData["pesan"] = "<div class='alert alert-success'>Proses tambah data Student berhasil</div>";
+                    return RedirectToAction("Index");
+                }
+                return View();
             }
-            catch
+            catch(Exception ex)
             {
+                ViewData["pesan"] = "Kesalahan : " + ex.Message;
                 return View();
             }
         }
