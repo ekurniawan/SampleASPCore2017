@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using ContohWeb.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ContohWeb.Controllers
 {
@@ -19,7 +20,7 @@ namespace ContohWeb.Controllers
         }
 
         // GET: Students
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             ViewData["Title"] = "Students";
             ViewData["bController"] = "Students";
@@ -30,14 +31,14 @@ namespace ContohWeb.Controllers
             ViewData["pesan"] = TempData["pesan"];
 
             //var results = context.Students.OrderBy(s => s.LastName).ToList();
-            var results = (from s in context.Students
+            var results = await (from s in context.Students
                           orderby s.LastName ascending
-                          select s).ToList();
+                          select s).ToListAsync();
             return View(results);
         }
 
         // GET: Students/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
             ViewData["Title"] = "Student Detail";
             ViewData["bController"] = "Students";
@@ -45,9 +46,9 @@ namespace ContohWeb.Controllers
             ViewData["bValue"] = "Students";
             ViewData["bItemValue"] = "Student Detail";
 
-            var result = (from s in context.Students
+            var result = await (from s in context.Students
                           where s.StudentID == id
-                          select s).SingleOrDefault();
+                          select s).SingleOrDefaultAsync();
 
             if (result != null)
             {
@@ -71,14 +72,14 @@ namespace ContohWeb.Controllers
         // POST: Students/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Student student)
+        public async Task<ActionResult> Create(Student student)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     context.Students.Add(student);
-                    context.SaveChanges();
+                    await context.SaveChangesAsync();
 
                     TempData["pesan"] = @"<div class='alert alert-success alert-dismissable'>
                         <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
@@ -97,11 +98,11 @@ namespace ContohWeb.Controllers
         }
 
         // GET: Students/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            var result = (from s in context.Students
+            var result = await (from s in context.Students
                           where s.StudentID == id
-                          select s).SingleOrDefault();
+                          select s).SingleOrDefaultAsync();
 
             if (result != null)
                 return View(result);
@@ -112,39 +113,82 @@ namespace ContohWeb.Controllers
         // POST: Students/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, Student student)
         {
             try
             {
-                // TODO: Add update logic here
+                var editStudent = await (from s in context.Students
+                                   where s.StudentID == id
+                                   select s).SingleOrDefaultAsync();
 
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    if (editStudent != null)
+                    {
+                        editStudent.LastName = student.LastName;
+                        editStudent.FirstMidName = student.FirstMidName;
+                        editStudent.EnrollmentDate = student.EnrollmentDate;
+                        await context.SaveChangesAsync();
+
+                        TempData["pesan"] = @"<div class='alert alert-success alert-dismissable'>
+                        <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+                        Proses edit data Student " + student.LastName + " berhasil</div>";
+
+                        return RedirectToAction("Index");
+                    }
+                }
+                return View();
             }
-            catch
+            catch(Exception ex)
             {
+                ViewData["pesan"] = @"<div class='alert alert-warning alert-dismissable'>
+                        <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+                        <strong>Kesalahan:</strong>" + ex.Message + "</div>";
                 return View();
             }
         }
 
         // GET: Students/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            var result = await (from s in context.Students
+                          where s.StudentID == id
+                          select s).SingleOrDefaultAsync();
+            if(result!=null)
+                return View(result);
+
+            return NotFound("Data tidak ditemukan");
         }
 
         // POST: Students/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(Student student)
         {
             try
             {
-                // TODO: Add delete logic here
+                var result = await (from s in context.Students
+                              where s.StudentID == student.StudentID
+                              select s).SingleOrDefaultAsync();
 
-                return RedirectToAction(nameof(Index));
+                if(result!=null)
+                {
+                    context.Students.Remove(result);
+                    await context.SaveChangesAsync();
+
+                    TempData["pesan"] = @"<div class='alert alert-success alert-dismissable'>
+                        <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+                        Proses delete data berhasil</div>";
+
+                    return RedirectToAction("Index");
+                }
+                return View();
             }
-            catch
+            catch (Exception ex)
             {
+                ViewData["pesan"] = @"<div class='alert alert-warning alert-dismissable'>
+                        <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+                        <strong>Kesalahan:</strong>" + ex.Message + "</div>";
                 return View();
             }
         }

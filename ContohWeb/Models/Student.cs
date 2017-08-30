@@ -8,6 +8,7 @@ namespace ContohWeb.Models
 {
     public class Student
     {
+        [Display(Name ="Student ID")]
         public int StudentID { get; set; }
 
         [Display(Name ="Last Name")]
