@@ -10,6 +10,7 @@ using ContohWeb.Models;
 
 namespace ContohWeb.Controllers
 {
+    //sample
     public class MahasiswaController : Controller
     {
         static List<Mahasiswa> lstMhs = new List<Mahasiswa>

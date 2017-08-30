@@ -1,0 +1,36 @@
+﻿@model ContohWeb.Models.Student
+
+@{
+    ViewData["Title"] = "Detail Student";
+}
+
+<h2>Detail Student</h2>
+
+<div class="col-md-6">
+    <dl class="dl-horizontal">
+        <dt>
+            <label for="nim">Student ID :</label>
+        </dt>
+        <dd>
+            @Model.StudentID
+        </dd>
+        <dt>
+            <label for="nim">First Name :</label>
+        </dt>
+        <dd>
+            @Model.FirstMidName
+        </dd>
+        <dt>
+            <label for="nim">Last Name :</label>
+        </dt>
+        <dd>
+            @Model.LastName
+        </dd>
+        <dt>
+            <label for="nim">Enrollment Date :</label>
+        </dt>
+        <dd>
+            @Model.EnrollmentDate.ToString("MM-dd-yyyy")
+        </dd>
+    </dl>
+</div>
