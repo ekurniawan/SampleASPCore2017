@@ -33,9 +33,46 @@ namespace ContohWeb.Data
                new Student {FirstMidName="Laura",LastName="Norman",EnrollmentDate=DateTime.Parse("2003-09-01")}
             };
 
-            foreach(var student in students)
+            foreach (var student in students)
             {
                 context.Students.Add(student);
+            }
+            context.SaveChanges();
+
+
+            var instructors = new Instructor[]
+            {
+                new Instructor { FirstMidName = "Kim",LastName = "Abercrombie",HireDate = DateTime.Parse("1995-03-11") },
+                new Instructor { FirstMidName = "Jon",LastName = "Snow",HireDate = DateTime.Parse("1996-03-11") },
+                new Instructor { FirstMidName = "Tyrion",LastName = "Lannister",HireDate = DateTime.Parse("2001-03-11") },
+                new Instructor { FirstMidName = "Jammie",LastName = "Lannis",HireDate = DateTime.Parse("2003-03-11") },
+                new Instructor { FirstMidName = "Robb",LastName = "Starkie",HireDate = DateTime.Parse("2004-03-11") },
+                new Instructor { FirstMidName = "Arya",LastName = "Stark",HireDate = DateTime.Parse("2007-03-11") }
+            };
+
+            foreach (var instructor in instructors)
+            {
+                context.Instructors.Add(instructor);
+            }
+            context.SaveChanges();
+
+            var departments = new Department[]
+            {
+                new Department { Name="English",Budget=350000,StartDate=DateTime.Parse("2007-09-01"),
+                 InstructorID=instructors.Single(i=>i.LastName=="Abercrombie").InstructorID},
+                new Department { Name="Information Technology",Budget=650000,StartDate=DateTime.Parse("2008-09-01"),
+                 InstructorID=instructors.Single(i=>i.LastName=="Snow").InstructorID},
+                new Department { Name="Engineering",Budget=350000,StartDate=DateTime.Parse("2007-09-01"),
+                 InstructorID=instructors.Single(i=>i.LastName=="Lannister").InstructorID},
+                new Department { Name="Business",Budget=350000,StartDate=DateTime.Parse("2007-09-01"),
+                 InstructorID=instructors.Single(i=>i.LastName=="Stark").InstructorID},
+                new Department { Name="Mathematics",Budget=350000,StartDate=DateTime.Parse("2007-09-01"),
+                 InstructorID=instructors.Single(i=>i.LastName=="Starkie").InstructorID}
+            };
+
+            foreach (var department in departments)
+            {
+                context.Departments.Add(department);
             }
             context.SaveChanges();
 
@@ -50,9 +87,49 @@ namespace ContohWeb.Data
                 new Course{CourseID=2042,Title="Struktur Data",Credits=4}
             };
 
-            foreach(var course in courses)
+            foreach (var course in courses)
             {
                 context.Courses.Add(course);
+            }
+            context.SaveChanges();
+
+
+            var officeassignments = new OfficeAssignment[]
+            {
+                new OfficeAssignment {
+                    InstructorID = instructors.Single( i => i.LastName == "Abercrombie").InstructorID,
+                    Location = "Gedung Agape lt 3" },
+                new OfficeAssignment {
+                    InstructorID = instructors.Single( i => i.LastName == "Snow").InstructorID,
+                    Location = "Gedung Biblos lt 2" },
+                new OfficeAssignment {
+                    InstructorID = instructors.Single( i => i.LastName == "Stark").InstructorID,
+                    Location = "Gedung Agape lt 5" }
+            };
+
+            foreach (var officeassignment in officeassignments)
+            {
+                context.OfficeAssignments.Add(officeassignment);
+            }
+            context.SaveChanges();
+
+            var courseassigments = new CourseAssignment[]
+            {
+                 new CourseAssignment { CourseID = courses.Single(c => c.Title == "Algoritma dan Pemrograman" ).CourseID,
+                    InstructorID = instructors.Single(i => i.LastName == "Abercrombie").InstructorID},
+                 new CourseAssignment { CourseID = courses.Single(c => c.Title == "Pemrograman Web" ).CourseID,
+                    InstructorID = instructors.Single(i => i.LastName == "Snow").InstructorID},
+                 new CourseAssignment { CourseID = courses.Single(c => c.Title == "Pemrograman Mobile" ).CourseID,
+                    InstructorID = instructors.Single(i => i.LastName == "Stark").InstructorID},
+                 new CourseAssignment { CourseID = courses.Single(c => c.Title == "Rekayasa Perangkat Lunak" ).CourseID,
+                    InstructorID = instructors.Single(i => i.LastName == "Abercrombie").InstructorID},
+                 new CourseAssignment { CourseID = courses.Single(c => c.Title == "Machine Learning" ).CourseID,
+                    InstructorID = instructors.Single(i => i.LastName == "Lannister").InstructorID}
+            };
+
+            foreach(var courseassignment in courseassigments)
+            {
+                context.CourseAssignments.Add(courseassignment);
             }
             context.SaveChanges();
 
@@ -72,7 +149,7 @@ namespace ContohWeb.Data
                 new Enrollment{StudentID=7,CourseID=3141,Grade=Grade.A}
             };
 
-            foreach(var enrollment in enrolments)
+            foreach (var enrollment in enrolments)
             {
                 context.Enrollments.Add(enrollment);
             }
