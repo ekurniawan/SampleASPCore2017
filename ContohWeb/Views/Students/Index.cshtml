@@ -1,7 +1,11 @@
 ﻿@model List<ContohWeb.Models.Student>
 
 @{
-    ViewData["Title"] = "Student List";
+    ViewData["Title"] = "Students";
+    ViewData["bController"] = "Students";
+    ViewData["bAction"] = "Index";
+    ViewData["bValue"] = "Students";
+    ViewData["bItemValue"] = "Student List";
 }
 
 <h2>Student List</h2>
@@ -12,7 +16,7 @@
 <table class="table table-striped">
     <tr>
         <th>Student ID</th>
-        <th>First Name</th>
+        <th><a asp-action="Index" asp-route-sortOrder="@ViewData["FirstSortParam"]">First Name</a></th>
         <th>Last Name</th>
         <th>Enrollment Date</th>
         <th></th>

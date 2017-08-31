@@ -20,32 +20,32 @@ namespace ContohWeb.Controllers
         }
 
         // GET: Students
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string sortOrder)
         {
-            ViewData["Title"] = "Students";
-            ViewData["bController"] = "Students";
-            ViewData["bAction"] = "Index";
-            ViewData["bValue"] = "Students";
-            ViewData["bItemValue"] = "Student List";
+            ViewData["FirstSortParam"] = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
 
             ViewData["pesan"] = TempData["pesan"];
 
             //var results = context.Students.OrderBy(s => s.LastName).ToList();
-            var results = await (from s in context.Students
-                                 orderby s.LastName ascending
-                                 select s).AsNoTracking().ToListAsync();
-            return View(results);
+            var results = from s in context.Students
+                          select s;
+
+            switch (sortOrder)
+            {
+                case "first_desc":
+                    results = results.OrderByDescending(s => s.FirstMidName);
+                    break;
+                default:
+                    results = results.OrderBy(s => s.FirstMidName);
+                    break;
+            }
+
+            return View(await results.AsNoTracking().ToListAsync());
         }
 
         // GET: Students/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            ViewData["Title"] = "Student Detail";
-            ViewData["bController"] = "Students";
-            ViewData["bAction"] = "Index";
-            ViewData["bValue"] = "Students";
-            ViewData["bItemValue"] = "Student Detail";
-
             var result = await (from s in context.Students
                                 where s.StudentID == id
                                 select s).SingleOrDefaultAsync();
@@ -60,11 +60,7 @@ namespace ContohWeb.Controllers
         // GET: Students/Create
         public ActionResult Create()
         {
-            ViewData["Title"] = "Create Student";
-            ViewData["bController"] = "Students";
-            ViewData["bAction"] = "Index";
-            ViewData["bValue"] = "Students";
-            ViewData["bItemValue"] = "Create Student";
+          
 
             return View();
         }
