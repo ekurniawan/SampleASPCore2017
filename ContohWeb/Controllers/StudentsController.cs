@@ -20,7 +20,7 @@ namespace ContohWeb.Controllers
         }
 
         // GET: Students
-        public async Task<ActionResult> Index(string sortOrder)
+        public async Task<ActionResult> Index(string sortOrder,string searchString)
         {
             ViewData["FirstSortParam"] = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
             ViewData["LastSortParam"] = sortOrder == "last_asc" ? "last_desc" : "last_asc";
@@ -31,6 +31,11 @@ namespace ContohWeb.Controllers
             //var results = context.Students.OrderBy(s => s.LastName).ToList();
             var results = from s in context.Students
                           select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                results = results.Where(s => s.FirstMidName.Contains(searchString) || s.LastName.Contains(searchString));
+            }
 
             switch (sortOrder)
             {
