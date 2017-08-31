@@ -1,0 +1,33 @@
+﻿@model IEnumerable<ContohWeb.Models.ViewModels.EnrollmentDateGroup>
+
+@{
+    ViewData["Title"] = "Student Body Statistic";
+}
+
+<h2>Student Body Statistic</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.EnrollmentDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StudentCount)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnrollmentDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentCount)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

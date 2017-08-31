@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using ContohWeb.Models;
+using ContohWeb.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace ContohWeb.Controllers
@@ -75,6 +76,18 @@ namespace ContohWeb.Controllers
             //return View(await results.AsNoTracking().ToListAsync());
         }
 
+        public async Task<ActionResult> About()
+        {
+            var data = from s in context.Students
+                       group s by s.EnrollmentDate into dateGroup
+                       select new EnrollmentDateGroup
+                       {
+                           EnrollmentDate = dateGroup.Key,
+                           StudentCount = dateGroup.Count()
+                       };
+            return View(await data.AsNoTracking().ToListAsync());
+        }
+
         // GET: Students/Details/5
         public async Task<ActionResult> Details(int id)
         {
@@ -92,8 +105,6 @@ namespace ContohWeb.Controllers
         // GET: Students/Create
         public ActionResult Create()
         {
-          
-
             return View();
         }
 
