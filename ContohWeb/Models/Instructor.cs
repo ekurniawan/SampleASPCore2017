@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ContohWeb.Models
 {
-    public class Student
+    public class Instructor
     {
-        [Display(Name = "Student ID")]
-        public int StudentID { get; set; }
+        public int InstructorID { get; set; }
 
+        [Required]
         [Display(Name = "Last Name")]
-        [Required(ErrorMessage = "Data Last Name harus diisi !")]
         [StringLength(50)]
         public string LastName { get; set; }
 
@@ -23,12 +23,11 @@ namespace ContohWeb.Models
         [Column("FirstName")]
         public string FirstMidName { get; set; }
 
-        [Display(Name = "Enrollment Date")]
+        [Display(Name = "Hire Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime EnrollmentDate { get; set; }
+        public DateTime HireDate { get; set; }
 
-        [Display(Name = "Full Name")]
         public string FullName
         {
             get
@@ -37,6 +36,8 @@ namespace ContohWeb.Models
             }
         }
 
-        public ICollection<Enrollment> Enrollments { get; set; }
+        public ICollection<CourseAssignment> CourseAssignments { get; set; }
+        public OfficeAssignment OfficeAssignment { get; set; }
+
     }
 }

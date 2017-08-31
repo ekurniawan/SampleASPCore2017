@@ -11,9 +11,10 @@ using System;
 namespace ContohWeb.Migrations
 {
     [DbContext(typeof(SchoolContext))]
-    partial class SchoolContextModelSnapshot : ModelSnapshot
+    [Migration("20170831062641_alter_students_datannotation")]
+    partial class alter_students_datannotation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,7 +63,6 @@ namespace ContohWeb.Migrations
 
                     b.Property<string>("FirstMidName")
                         .IsRequired()
-                        .HasColumnName("FirstName")
                         .HasMaxLength(50);
 
                     b.Property<string>("LastName")
