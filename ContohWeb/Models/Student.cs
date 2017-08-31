@@ -20,6 +20,8 @@ namespace ContohWeb.Models
         public string FirstMidName { get; set; }
 
         [Display(Name = "Enrollment Date")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString ="{0:MM-dd-yyyy}",ApplyFormatInEditMode =true)]
         public DateTime EnrollmentDate { get; set; }
 
         public ICollection<Enrollment> Enrollments { get; set; }
