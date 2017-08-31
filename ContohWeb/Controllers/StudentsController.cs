@@ -23,6 +23,8 @@ namespace ContohWeb.Controllers
         public async Task<ActionResult> Index(string sortOrder)
         {
             ViewData["FirstSortParam"] = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
+            ViewData["LastSortParam"] = sortOrder == "last_asc" ? "last_desc" : "last_asc";
+            ViewData["DateSortParam"] = sortOrder == "date_asc" ? "date_desc" : "date_asc";
 
             ViewData["pesan"] = TempData["pesan"];
 
@@ -34,6 +36,18 @@ namespace ContohWeb.Controllers
             {
                 case "first_desc":
                     results = results.OrderByDescending(s => s.FirstMidName);
+                    break;
+                case "last_asc":
+                    results = results.OrderBy(s => s.LastName);
+                    break;
+                case "last_desc":
+                    results = results.OrderByDescending(s => s.LastName);
+                    break;
+                case "date_asc":
+                    results = results.OrderBy(s => s.EnrollmentDate);
+                    break;
+                case "date_desc":
+                    results = results.OrderByDescending(s => s.EnrollmentDate);
                     break;
                 default:
                     results = results.OrderBy(s => s.FirstMidName);
