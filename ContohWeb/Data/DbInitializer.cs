@@ -78,13 +78,20 @@ namespace ContohWeb.Data
 
             var courses = new Course[]
             {
-                new Course{CourseID=1050,Title="Algoritma dan Pemrograman",Credits=3},
-                new Course{CourseID=4022,Title="Pemrograman Web",Credits=3},
-                new Course{CourseID=4041,Title="Pemrograman Mobile",Credits=3},
-                new Course{CourseID=1045,Title="Rekayasa Perangkat Lunak",Credits=3},
-                new Course{CourseID=3141,Title="Basis Data",Credits=4},
-                new Course{CourseID=2021,Title="Machine Learning",Credits=3},
-                new Course{CourseID=2042,Title="Struktur Data",Credits=4}
+                new Course{CourseID=1050,Title="Algoritma dan Pemrograman",Credits=3,
+                    DepartmentID =departments.Single( s => s.Name == "Information Technology").DepartmentID},
+                new Course{CourseID=4022,Title="Pemrograman Web",Credits=3,
+                    DepartmentID =departments.Single( s => s.Name == "Information Technology").DepartmentID},
+                new Course{CourseID=4041,Title="Pemrograman Mobile",
+                    Credits =3,DepartmentID =departments.Single( s => s.Name == "Information Technology").DepartmentID},
+                new Course{CourseID=1045,Title="Rekayasa Perangkat Lunak",Credits=3,
+                    DepartmentID =departments.Single( s => s.Name == "Information Technology").DepartmentID},
+                new Course{CourseID=3141,Title="Basis Data",Credits=4,
+                DepartmentID =departments.Single( s => s.Name == "Engineering").DepartmentID},
+                new Course{CourseID=2021,Title="Machine Learning",Credits=3,
+                DepartmentID =departments.Single( s => s.Name == "Business").DepartmentID},
+                new Course{CourseID=2042,Title="Struktur Data",Credits=4,
+                    DepartmentID =departments.Single( s => s.Name == "Mathematics").DepartmentID}
             };
 
             foreach (var course in courses)
@@ -149,11 +156,15 @@ namespace ContohWeb.Data
                 new Enrollment{StudentID=7,CourseID=3141,Grade=Grade.A}
             };
 
-            foreach (var enrollment in enrolments)
+            foreach (Enrollment e in enrolments)
             {
-                context.Enrollments.Add(enrollment);
+                var enrollmentInDatabase = context.Enrollments.Where(s => s.StudentID == e.StudentID &&
+                 s.Course.CourseID == e.CourseID).SingleOrDefault();
+                if (enrollmentInDatabase != null)
+                {
+                    context.Enrollments.Add(e);
+                }
             }
-
             context.SaveChanges();
         }
     }
