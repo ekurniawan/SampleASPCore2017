@@ -20,7 +20,7 @@ namespace ContohWeb.Controllers
         }
 
         // GET: Students
-        public async Task<ActionResult> Index(string sortOrder,string searchString)
+        public async Task<ActionResult> Index(string sortOrder, string currentFilter, string searchString,int? page)
         {
             ViewData["FirstSortParam"] = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
             ViewData["LastSortParam"] = sortOrder == "last_asc" ? "last_desc" : "last_asc";
@@ -28,7 +28,17 @@ namespace ContohWeb.Controllers
 
             ViewData["pesan"] = TempData["pesan"];
 
-            //var results = context.Students.OrderBy(s => s.LastName).ToList();
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+            
             var results = from s in context.Students
                           select s;
 
@@ -59,7 +69,10 @@ namespace ContohWeb.Controllers
                     break;
             }
 
-            return View(await results.AsNoTracking().ToListAsync());
+            int pageSize = 5;
+
+            return View(await PaginatedList<Student>.CreateAsync(results.AsNoTracking(), page ?? 1, pageSize));
+            //return View(await results.AsNoTracking().ToListAsync());
         }
 
         // GET: Students/Details/5

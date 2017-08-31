@@ -1,4 +1,4 @@
-﻿@model List<ContohWeb.Models.Student>
+﻿@model PaginatedList<ContohWeb.Models.Student>
 
 @{
     ViewData["Title"] = "Students";
@@ -45,3 +45,14 @@
     }
 </table>
 
+@{ 
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex-1)" asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default btn-sm @prevDisabled">Previous</a>&nbsp;
+<a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex+1)" asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default btn-sm @nextDisabled">Next</a>
