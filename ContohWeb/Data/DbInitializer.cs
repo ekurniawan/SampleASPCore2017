@@ -10,6 +10,10 @@ namespace ContohWeb.Data
 {
     public static class DbInitializer
     {
+        //dotnet ef migrations add InitialCreate
+        //dotnet ef database update
+        //dotnet ef migrations add <create_table_blabla>
+        //dotnet ef migrations remove
         //untuk menambahkan data seeding / data diawal ketika database dibuat
         public static void Initialize(SchoolContext context)
         {
@@ -140,6 +144,8 @@ namespace ContohWeb.Data
             }
             context.SaveChanges();
 
+
+
             var enrolments = new Enrollment[]
             {
                 new Enrollment{StudentID=1,CourseID=1050,Grade=Grade.A},
@@ -158,12 +164,7 @@ namespace ContohWeb.Data
 
             foreach (Enrollment e in enrolments)
             {
-                var enrollmentInDatabase = context.Enrollments.Where(s => s.StudentID == e.StudentID &&
-                 s.Course.CourseID == e.CourseID).SingleOrDefault();
-                if (enrollmentInDatabase != null)
-                {
-                    context.Enrollments.Add(e);
-                }
+                context.Enrollments.Add(e);   
             }
             context.SaveChanges();
         }
