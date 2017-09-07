@@ -31,9 +31,18 @@ namespace ContohWeb.Controllers
         }
 
         // GET: Courses/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int? id)
         {
-            return View();
+            if (id == null)
+                return NotFound();
+
+            var course = await (from c in context.Courses.Include(c => c.Department)
+                                where c.CourseID == id
+                                select c).AsNoTracking().SingleOrDefaultAsync();
+            if (course == null)
+                return NotFound();
+
+            return View(course);
         }
 
         // GET: Courses/Create
@@ -100,7 +109,7 @@ namespace ContohWeb.Controllers
             {
                 try
                 {
-                    await context.SaveChangesAsync();
+                    await context.SaveChangesAsync(); 
                 }
                 catch (DbUpdateException)
                 {
@@ -115,26 +124,39 @@ namespace ContohWeb.Controllers
         }
 
         // GET: Courses/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            return View();
+
+            if (id == null)
+                return NotFound();
+
+            var course = await(from c in context.Courses.Include(c => c.Department)
+                               where c.CourseID == id
+                               select c).AsNoTracking().SingleOrDefaultAsync();
+            if (course == null)
+                return NotFound();
+
+            return View(course);
         }
 
         // POST: Courses/Delete/5
-        [HttpPost]
+        [HttpPost,ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeletePost(int? id)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            if (id == null)
+                return NotFound();
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var course = await (from c in context.Courses
+                                where c.CourseID == id
+                                select c).SingleOrDefaultAsync();
+            if (course == null)
+                return NotFound();
+
+            context.Courses.Remove(course);
+            await context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
         }
     }
 }

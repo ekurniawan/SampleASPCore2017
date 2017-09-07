@@ -1,0 +1,40 @@
+﻿@model ContohWeb.Models.Course
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details Course</h2>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CourseID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CourseID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Credits)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Credits)
+        </dd>
+        <dt>
+            Department Name
+        </dt>
+        <dd>
+            @Model.Department.Name
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new {  id = Model.CourseID }) |
+    <a asp-action="Index">Back to List</a>
+</div>
