@@ -24,6 +24,7 @@
                 <th>
                     Department Name
                 </th>
+                <th></th>
         </tr>
     </thead>
     <tbody>
@@ -41,7 +42,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Department.Name)
             </td>
-            
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CourseID" 
+                   class="btn btn-warning btn-sm">Edit</a>
+            </td>
         </tr>
 }
     </tbody>

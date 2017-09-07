@@ -48,25 +48,23 @@ namespace ContohWeb.Controllers
             var departmentsQuery = from d in context.Departments
                                    orderby d.Name
                                    select d;
-            ViewBag.DepartmentID = new SelectList(departmentsQuery.AsNoTracking(), 
+            ViewBag.DepartmentID = new SelectList(departmentsQuery.AsNoTracking(),
                 "DepartmentID", "Name", selectedDepartment);
         }
 
         // POST: Courses/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(Course course)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
+                context.Courses.Add(course);
+                await context.SaveChangesAsync();
+                return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+            PopulateDepartmentsDropDownList();
+            return View(course);
         }
 
         // GET: Courses/Edit/5
