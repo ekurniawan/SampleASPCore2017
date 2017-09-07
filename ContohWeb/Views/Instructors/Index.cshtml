@@ -89,5 +89,23 @@
             </tr>
         }
     </table>
+}
 
+<br /><br />
+@if(Model.Enrollments != null)
+{
+    <h3>Student Enrolled In Selected Course</h3>
+    <table class="table table-striped">
+        <tr>
+            <td>Name</td>
+            <td>Grade</td>
+        </tr>
+        @foreach(var item in Model.Enrollments)
+        {
+            <tr>
+                <td>@item.Student.FullName</td>
+                <td>@item.Grade</td>
+            </tr>
+        }
+    </table>
 }
