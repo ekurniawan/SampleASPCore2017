@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using ContohWeb.Models;
 using Microsoft.EntityFrameworkCore;
+using ContohWeb.Models.ViewModels;
 
 namespace ContohWeb.Controllers
 {
@@ -20,12 +21,43 @@ namespace ContohWeb.Controllers
         }
 
         // GET: Instructors
-        public async Task<ActionResult> Index()
+        /*public async Task<ActionResult> Index()
         {
             var results = from i in context.Instructors.Include(i => i.OfficeAssignment)
                           orderby i.LastName
                           select i;
             return View(await results.AsNoTracking().ToListAsync());
+        }*/
+
+        public async Task<IActionResult> Index(int? id,int? courseID)
+        {
+            var viewModel = new InstructorIndexData();
+            viewModel.Instructors = await (from i in context.Instructors.Include(i => i.OfficeAssignment).Include(i => i.CourseAssignments)
+                                            .ThenInclude(i => i.Course).ThenInclude(i => i.Enrollments).ThenInclude(i => i.Student)
+                                        .Include(i => i.CourseAssignments).ThenInclude(i => i.Course).ThenInclude(i => i.Department)
+                                           orderby i.LastName select i)
+                                        .AsNoTracking().ToListAsync();
+                                        
+            if(id != null)
+            {
+                ViewData["InstructorID"] = id.Value;
+                Instructor instructor = (from i in viewModel.Instructors
+                                         where i.InstructorID == id.Value
+                                         select i).SingleOrDefault();
+
+                viewModel.Courses = from c in instructor.CourseAssignments
+                                    select c.Course;
+            }
+
+            if (courseID != null)
+            {
+                ViewData["CourseID"] = courseID.Value;
+                viewModel.Enrollments = (from c in viewModel.Courses
+                                         where c.CourseID == courseID
+                                         select c).Single().Enrollments;
+            }
+
+            return View(viewModel);
         }
 
         // GET: Instructors/Details/5

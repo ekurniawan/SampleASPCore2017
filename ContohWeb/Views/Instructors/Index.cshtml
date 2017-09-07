@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ContohWeb.Models.Instructor>
+﻿@model ContohWeb.Models.ViewModels.InstructorIndexData
 @{
     ViewData["Title"] = "Index";
 }
@@ -10,32 +10,32 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.InstructorID)
+                Last Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                First Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FirstMidName)
+               Hire Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HireDate)
+               Office
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FullName)
+               Courses
             </th>
-            <th>
-                Office Location
-            </th>
+           
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Instructors)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.InstructorID)
-                </td>
+            string selectedRow = "";
+            if(item.InstructorID == (int?)ViewData["InstructorID"])
+            {
+                selectedRow = "table-success";
+            }
+            <tr class="@selectedRow">
                 <td>
                     @Html.DisplayFor(modelItem => item.LastName)
                 </td>
@@ -46,13 +46,19 @@
                     @Html.DisplayFor(modelItem => item.HireDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FullName)
-                </td>
-                <td>
                     @if (item.OfficeAssignment != null)
                     {
                         @item.OfficeAssignment.Location
                     }
+                </td>
+                <td>
+                    @foreach(var course in item.CourseAssignments)
+                    {
+                        @course.CourseID @: @course.Course.Title <br/>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Index" asp-route-id="@item.InstructorID">Select</a>
                 </td>
             </tr>
         }
