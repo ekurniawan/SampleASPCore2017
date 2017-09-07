@@ -68,26 +68,50 @@ namespace ContohWeb.Controllers
         }
 
         // GET: Courses/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            return View();
+            if (id == null)
+                return NotFound();
+
+            var course = await (from c in context.Courses
+                                where c.CourseID == id
+                                select c).AsNoTracking().SingleOrDefaultAsync();
+
+            if (course == null)
+                return NotFound();
+
+            PopulateDepartmentsDropDownList(course.DepartmentID);
+            return View(course);
         }
 
         // POST: Courses/Edit/5
-        [HttpPost]
+        [HttpPost,ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> EditPost(int? id)
         {
-            try
-            {
-                // TODO: Add update logic here
+            if (id == null)
+                return NotFound();
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
+            var courseToUpdate = await (from c in context.Courses
+                                  where c.CourseID == id
+                                  select c).SingleOrDefaultAsync();
+
+            if(await TryUpdateModelAsync<Course>(courseToUpdate,"", c => c.Credits, c => c.DepartmentID, c => c.Title))
             {
-                return View();
+                try
+                {
+                    await context.SaveChangesAsync();
+                }
+                catch (DbUpdateException)
+                {
+                    ModelState.AddModelError("", "Tidak bisa menyimpan data");
+                }
+                return RedirectToAction("Index");
             }
+
+            PopulateDepartmentsDropDownList(courseToUpdate.DepartmentID);
+            return View(courseToUpdate);
+
         }
 
         // GET: Courses/Delete/5
