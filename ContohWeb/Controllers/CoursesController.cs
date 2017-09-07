@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using ContohWeb.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ContohWeb.Controllers
 {
@@ -36,9 +37,19 @@ namespace ContohWeb.Controllers
         }
 
         // GET: Courses/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
+            PopulateDepartmentsDropDownList();
             return View();
+        }
+
+        private void PopulateDepartmentsDropDownList(object selectedDepartment = null)
+        {
+            var departmentsQuery = from d in context.Departments
+                                   orderby d.Name
+                                   select d;
+            ViewBag.DepartmentID = new SelectList(departmentsQuery.AsNoTracking(), 
+                "DepartmentID", "Name", selectedDepartment);
         }
 
         // POST: Courses/Create
