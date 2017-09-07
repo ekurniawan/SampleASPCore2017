@@ -16,22 +16,21 @@
                 First Name
             </th>
             <th>
-               Hire Date
+                Hire Date
             </th>
             <th>
-               Office
+                Office
             </th>
             <th>
-               Courses
+                Courses
             </th>
-           
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.Instructors)
         {
             string selectedRow = "";
-            if(item.InstructorID == (int?)ViewData["InstructorID"])
+            if (item.InstructorID == (int?)ViewData["InstructorID"])
             {
                 selectedRow = "table-success";
             }
@@ -52,9 +51,9 @@
                     }
                 </td>
                 <td>
-                    @foreach(var course in item.CourseAssignments)
+                    @foreach (var course in item.CourseAssignments)
                     {
-                        @course.CourseID @: @course.Course.Title <br/>
+                        @course.CourseID @: @course.Course.Title <br />
                     }
                 </td>
                 <td>
@@ -64,3 +63,31 @@
         }
     </tbody>
 </table>
+<br /><br />
+@if (Model.Courses != null)
+{
+    <h3>Course Taught By Selected Instructor</h3>
+    <table class="table table-striped">
+        <tr>
+            <th></th>
+            <th>Number</th>
+            <th>Title</th>
+            <th>Departement</th>
+        </tr>
+        @foreach (var item in Model.Courses)
+        {
+            string selectedRow = "";
+            if (item.CourseID == (int?)ViewData["CourseID"])
+            {
+                selectedRow = "table-success";
+            }
+            <tr class="@selectedRow">
+                <td><a asp-action="Index" asp-route-courseID="@item.CourseID">Select</a></td>
+                <td>@item.CourseID</td>
+                <td>@item.Title</td>
+                <td>@item.Department.Name</td>
+            </tr>
+        }
+    </table>
+
+}
